@@ -1,20 +1,66 @@
-﻿// parsing.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
 
-#include <iostream>
+string deleteSpaces(string s)
+{
+    size_t pos = s.find(' ');
+
+    if (!s.empty())
+    {
+        while (pos != string::npos)
+        {
+            if (pos != string::npos)
+                s.erase(pos, 1);
+            pos = s.find(' ');
+        }
+    }
+    return s;
+}
+
+vector<double> splitString(string s, char delimiter = ',')
+{
+    vector<double> vd;
+    s = deleteSpaces(s);
+    double num;
+    string part;
+    size_t startPos = 0;
+    size_t pos = s.find(delimiter);
+    while (pos != std::string::npos)
+    {
+        part = s.substr(startPos, pos - startPos);
+        if (part.length() > 0)
+        {
+            num = stod(part);
+            vd.push_back(num);
+        }
+        startPos = pos + 1;
+        pos = s.find(delimiter, pos + 1);
+    }
+    part = s.substr(startPos, s.length() - startPos);
+    if (part.length() > 0)
+    {
+        num = stod(part);
+        vd.push_back(num);
+    }
+    return vd;
+}
+
+void Print(vector<double> vd)
+{
+    cout << 'X' << '\t' << 'Y' << endl;
+    for (int i = 0; i < vd.size(); i+=2)
+    {
+        cout << vd[i] << '\t' << vd[i + 1] << endl;
+    }
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    vector<double> vd;
+
+    string s = "192.56, -21.2, 17.08, 22.8, -0.01, 0.02, 33.2, 43.8, -12.1, 14.5";
+    vd = splitString(s);
+    Print(vd);
 }
-
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
-
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
